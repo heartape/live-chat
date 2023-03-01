@@ -1,0 +1,5 @@
+###
+POST http://localhost:8080/live/chat
+Content-Type: application/json
+
+"测试弹幕"
