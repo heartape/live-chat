@@ -1,17 +1,13 @@
 package com.heartape.websocket;
 
-import com.heartape.BulletChat;
-import com.heartape.queue.BulletChatQueue;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ws://localhost:8080/chat
@@ -20,7 +16,11 @@ import java.util.concurrent.TimeUnit;
 @Component
 @ServerEndpoint("/chat")
 public class BulletChatWebsocketServer {
-    private byte status = 0;
+
+    @Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    private long uid;
 
     /**
      * 连接成功
@@ -29,16 +29,7 @@ public class BulletChatWebsocketServer {
     @OnOpen
     public void onOpen(Session session) {
         log.info("开启连接");
-        while (this.status >= 0 && session.isOpen()){
-            List<BulletChat> bulletChats = BulletChatQueue.getInstance().poll();
-            if (bulletChats != null){
-                session.getAsyncRemote().sendObject(bulletChats);
-                log.info("发送弹幕");
-            }
-            // log.info("-----------------------");
-            TimeUnit.MILLISECONDS.sleep(1000);
-        }
-        session.close();
+        // todo:注册到连接管理器
     }
 
     /**
@@ -46,8 +37,7 @@ public class BulletChatWebsocketServer {
      */
     @SneakyThrows
     @OnClose
-    public void onClose(Session session) {
-        session.close();
+    public void onClose() {
         log.info("关闭连接");
     }
 
@@ -55,23 +45,15 @@ public class BulletChatWebsocketServer {
      * 接收到消息
      */
     @OnMessage
-    public void onMessage(String text) {
-        // System.out.println(Arrays.toString(bytes));
-        // String text = new String(bytes, StandardCharsets.UTF_8);
-        log.info(text);
-        switch (text) {
-            case "-1" -> this.status = -1;
-            case "0" -> this.status = 0;
-            case "1" -> this.status = 1;
-            case "2" -> this.status = 2;
-        }
+    public void onMessage(String message, Session session) {
+        log.info(message);
     }
 
     /**
      * 异常
      */
     @OnError
-    public String onError(Throwable throwable) {
-        return "异常";
+    public void onError(Throwable throwable) {
+        log.info("连接异常");
     }
 }
