@@ -16,7 +16,8 @@ public class ProducerController {
 
     @PostMapping
     public String single(@RequestBody String message) {
-        BulletChat bulletChat = new BulletChat(1L, 1L, message);
+        String timestamp = Long.toString(System.currentTimeMillis());
+        BulletChat bulletChat = new BulletChat(1L, 1L, message, timestamp);
         ObjectMapper objectMapper = new ObjectMapper();
         String s;
         try {

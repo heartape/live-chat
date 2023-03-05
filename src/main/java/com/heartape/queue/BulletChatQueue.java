@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BulletChatQueue {
-    public final Queue<List<BulletChat>> queue = new ConcurrentLinkedQueue<>();
+    private final Queue<List<BulletChat>> queue = new ConcurrentLinkedQueue<>();
 
     private final static BulletChatQueue bulletChatQueue = new BulletChatQueue();
 
@@ -23,5 +23,9 @@ public class BulletChatQueue {
 
     public List<BulletChat> poll(){
         return queue.isEmpty() ? null : queue.poll();
+    }
+
+    public boolean isEmpty(){
+        return queue.isEmpty();
     }
 }

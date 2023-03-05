@@ -2,9 +2,9 @@ spring:
   kafka:
     client-id: live-chat-client
     bootstrap-servers:
-      - 192.168.31.101:9092
-      - 192.168.31.102:9092
-      - 192.168.31.103:9092
+      - 192.168.31.201:9092
+      - 192.168.31.202:9092
+      - 192.168.31.203:9092
     producer:
       retries: 0 # 重试次数
       acks: 1

@@ -13,4 +13,5 @@ public class BulletChat {
     private Long id;
     private Long uid;
     private String content;
+    private String timestamp;
 }
