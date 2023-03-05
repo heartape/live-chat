@@ -13,11 +13,10 @@
 
     // 用时间戳模拟登录用户
     const userId = new Date().getTime().toString();
+    const url = new URL(`http://localhost:8080/sse/chat`)
+    url.searchParams.set('uid', userId)
 
     if (!!window.EventSource) {
-
-        const url = new URL(`http://localhost:8080/sse/chat`)
-        url.searchParams.set('id', userId)
 
         // 建立连接
         source = new EventSource(url);
@@ -27,7 +26,7 @@
          * 另一种写法：source.onopen = function (event) {}
          */
         source.addEventListener('open', function (e) {
-            setMessageInnerHTML("建立连接。。。");
+            setMessageInnerHTML("弹幕已连接。。。");
         }, false);
 
         /**
@@ -38,7 +37,6 @@
             setMessageInnerHTML(e.lastEventId + ':' + e.data);
         });
 
-
         /**
          * 如果发生通信错误（比如连接中断），就会触发error事件
          * 或者：
@@ -46,7 +44,7 @@
          */
         source.addEventListener('error', function (e) {
             if (e.readyState === EventSource.CLOSED) {
-                setMessageInnerHTML("连接关闭");
+                setMessageInnerHTML("弹幕连接关闭");
             }
         }, false);
 
@@ -61,11 +59,10 @@
 
     // 关闭Sse连接
     function closeSse() {
-        source.close();
         const httpRequest = new XMLHttpRequest();
-        httpRequest.open('GET', 'http://localhost:8080/sse/close', true);
+        httpRequest.open('DELETE', url, true);
         httpRequest.send();
-        console.log("close");
+        source.close();
     }
 
     // 将消息显示在网页上
