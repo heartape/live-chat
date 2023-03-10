@@ -1,31 +1,20 @@
 package com.heartape.connect;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class ConnectionManager {
-    private final Map<Long, Connection> cache = new ConcurrentHashMap<>();
+/**
+ * 连接管理：长连接降级
+ */
+public interface ConnectionManager<T extends Connection> {
+    T register(long uid, T connection);
 
-    private final static ConnectionManager connectionManager = new ConnectionManager();
+    T pick(long uid);
 
-    public static ConnectionManager getInstance(){
-        return connectionManager;
-    }
+    Collection<T> pickAll();
 
-    public void register(long uid, Connection connection){
-        cache.putIfAbsent(uid, connection);
-    }
+    void upgrade(long uid);
 
-    public Connection pick(long uid){
-        return cache.get(uid);
-    }
+    void relegation(long uid);
 
-    public Collection<Connection> pickAll(){
-        return cache.values();
-    }
-
-    public void logout(long uid){
-        cache.remove(uid);
-    }
+    T logout(long uid);
 }

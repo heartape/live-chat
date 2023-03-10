@@ -2,8 +2,8 @@ package com.heartape.listener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.heartape.BulletChat;
-import com.heartape.queue.BulletChatQueue;
+import com.heartape.repository.BulletChat;
+import com.heartape.repository.MemoryBulletChatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -40,6 +40,6 @@ public class MyKafkaListener {
             }
             list.add(bulletChat);
         }
-        BulletChatQueue.getInstance().offer(list);
+        MemoryBulletChatRepository.getInstance().insert(list);
     }
 }

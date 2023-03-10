@@ -1,4 +1,4 @@
-package com.heartape;
+package com.heartape.repository;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

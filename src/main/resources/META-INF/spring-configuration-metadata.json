@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "live.chat",
+      "type": "com.heartape.config.LiveChatProperties",
+      "sourceType": "com.heartape.config.LiveChatProperties"
+    },
+    {
+      "name": "live.chat.auth",
+      "type": "com.heartape.config.LiveChatProperties$Auth",
+      "sourceType": "com.heartape.config.LiveChatProperties"
+    },
+    {
+      "name": "live.chat.flow",
+      "type": "com.heartape.config.LiveChatProperties$Flow",
+      "sourceType": "com.heartape.config.LiveChatProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "live.chat.auth.black",
+      "type": "java.util.List<java.lang.Long>",
+      "sourceType": "com.heartape.config.LiveChatProperties$Auth"
+    },
+    {
+      "name": "live.chat.flow.count",
+      "type": "java.lang.Integer",
+      "sourceType": "com.heartape.config.LiveChatProperties$Flow"
+    }
+  ],
+  "hints": []
+}
